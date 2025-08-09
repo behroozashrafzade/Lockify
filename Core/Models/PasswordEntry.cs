@@ -12,7 +12,9 @@ namespace Core.Models
         public required string Username { get; set; }
         public required string Password { get; set; }
  
-        public required string Email { get; set; }
+        public  string Email { get; set; } = string.Empty;
+
+        public string Description { get; set; } = string.Empty;
 
         public required string PasswordHash { get; set; }
 
