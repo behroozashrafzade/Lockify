@@ -23,5 +23,7 @@ namespace Core.Models
 
         public required DateTime CreatedAt { get; set; } = DateTime.Now;
 
+        public required DateTime UpdatedAt { get; set; } = DateTime.Now;
+
     }
 }
