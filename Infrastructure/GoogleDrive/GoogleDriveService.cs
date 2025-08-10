@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Application.Interfaces;
+using Google.Apis.Oauth2.v2.Data;
+using Google.Apis.Oauth2.v2;
 
 namespace Infrastructure.GoogleDrive
 {
@@ -31,7 +33,7 @@ namespace Infrastructure.GoogleDrive
                     CancellationToken.None,
                     new FileDataStore(credPath, true)
                 );
-
+                string userEmail = await GetUserEmailAsync(credential);
                 _driveService = new DriveService(new BaseClientService.Initializer()
                 {
                     HttpClientInitializer = credential,
@@ -85,6 +87,18 @@ namespace Infrastructure.GoogleDrive
 
 
         }
+
+        public async Task<string> GetUserEmailAsync(UserCredential credential)
+        {
+            var oauth2Service = new Oauth2Service(new BaseClientService.Initializer
+            {
+                HttpClientInitializer = credential
+            });
+
+            Userinfo userInfo = await oauth2Service.Userinfo.Get().ExecuteAsync();
+            return userInfo.Email;
+        }
+
     }
 
 }
