@@ -14,7 +14,7 @@ namespace Infrastructure.GoogleDrive
     {
         private readonly GoogleDriveService _driveService;
         private readonly AesEncryptionService _crypto;
-        private readonly string _encryptionKey;  // کلید رمزنگاری که ایمیل کاربره
+        private readonly string _encryptionKey;  // 
 
         // ایمیل رو تو کانستراکتور می‌گیری
         public SyncService(GoogleDriveService driveService, AesEncryptionService crypto, string encryptionKey)
