@@ -14,41 +14,39 @@ namespace Infrastructure.GoogleDrive
     {
         private readonly GoogleDriveService _driveService;
         private readonly AesEncryptionService _crypto;
-        private readonly string _encryptionKey = "your-secure-key"; // کلید رمزنگاری ثابت یا از تنظیمات بخون
+        private readonly string _encryptionKey;  // کلید رمزنگاری که ایمیل کاربره
 
-        public SyncService(GoogleDriveService driveService, AesEncryptionService crypto)
+        // ایمیل رو تو کانستراکتور می‌گیری
+        public SyncService(GoogleDriveService driveService, AesEncryptionService crypto, string encryptionKey)
         {
             _driveService = driveService;
             _crypto = crypto;
+            _encryptionKey = encryptionKey;
         }
 
         public async Task UploadPasswordsAsync(List<PasswordEntry> passwords)
         {
-            // 1. سریالایز به JSON
             string jsonData = JsonConvert.SerializeObject(passwords);
 
-            // 2. رمزنگاری (ورودی کلید اضافه شد)
+            // پاس دادن کلید ایمیل به متد Encrypt
             string encrypted = _crypto.Encrypt(jsonData, _encryptionKey);
 
-            // 3. ذخیره به یک فایل موقت
             string tempFile = Path.GetTempFileName();
             File.WriteAllText(tempFile, encrypted);
 
-            // 4. آپلود به گوگل درایو
             await _driveService.UploadFileAsync(tempFile, "passwords.enc");
         }
 
         public async Task<List<PasswordEntry>> DownloadPasswordsAsync()
         {
-            // 1. دانلود فایل رمزنگاری‌شده
             string tempFile = Path.GetTempFileName();
             await _driveService.DownloadFileAsync("passwords.enc", tempFile);
 
-            // 2. خواندن و رمزگشایی (ورودی کلید اضافه شد)
             string encrypted = File.ReadAllText(tempFile);
+
+            // پاس دادن کلید ایمیل به متد Decrypt
             string jsonData = _crypto.Decrypt(encrypted, _encryptionKey);
 
-            // 3. برگرداندن لیست
             return JsonConvert.DeserializeObject<List<PasswordEntry>>(jsonData);
         }
 
