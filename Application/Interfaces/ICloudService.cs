@@ -8,24 +8,24 @@ namespace Application.Interfaces
 {
     public interface ICloudService
     {
-        /// <summary>
-        /// احراز هویت کاربر در سرویس ابری
-        /// </summary>
+
+        /// User authentication in cloud service
+
         Task<bool> AuthenticateAsync();
 
-        /// <summary>
-        /// آپلود فایل پسوردها به سرویس ابری
-        /// </summary>
+
+        ///Upload password file to cloud service
+
         Task UploadFileAsync(string localFilePath, string remoteFileName);
 
-        /// <summary>
-        /// دانلود فایل پسوردها از سرویس ابری
-        /// </summary>
+
+        /// Download password file from cloud service
+
         Task DownloadFileAsync(string remoteFileName, string localFilePath);
 
-        /// <summary>
-        /// بررسی اینکه آیا فایل روی سرویس ابری وجود دارد یا نه
-        /// </summary>
+
+        /// Checking if a file exists on a cloud serviceه
+       
         Task<bool> FileExistsAsync(string remoteFileName);
     
     }
