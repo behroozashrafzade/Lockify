@@ -63,6 +63,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="Application\Lockify.Application.csproj" />
 	  <ProjectReference Include="Infrastructure\Lockify.Infrastructure.csproj" />
 	</ItemGroup>
 
