@@ -24,16 +24,34 @@ namespace Lockify.ViewModels
             set => SetProperty(ref _password, value);
         }
 
+        private bool _isBusy;
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
+        }
+
         public ICommand LoginCommand { get; }
 
         public LoginViewModel()
         {
-            LoginCommand = new Command(OnLogin);
+            LoginCommand = new Command(OnLogin, () => !IsBusy);
         }
 
-        private void OnLogin()
+        private async void OnLogin()
         {
-            // TODO: اتصال به سرویس لاگین
+            if (IsBusy) return;
+
+            try
+            {
+                IsBusy = true;
+                // TODO: اتصال به سرویس احراز هویت
+                await Task.Delay(1500); // شبیه‌سازی درخواست سرور
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
     }
 }
