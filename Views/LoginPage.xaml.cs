@@ -1,3 +1,5 @@
+using Lockify.ViewModels;
+
 namespace Lockify.Views;
 
 public partial class LoginPage : ContentPage
